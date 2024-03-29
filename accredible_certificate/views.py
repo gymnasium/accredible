@@ -39,7 +39,7 @@ def request_certificate(request):
         if request.user.is_authenticated():
             # Enter your api key here
             xqci = CertificateGeneration(
-                api_key=settings.APPSEMBLER_FEATURES['ACCREDIBLE_API_KEY']
+                api_key=settings.ACCREDIBLE_API_KEY
             )
             username = request.user.username
             student = User.objects.get(username=username)
