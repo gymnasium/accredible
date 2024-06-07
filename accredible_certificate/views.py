@@ -1,5 +1,4 @@
 """URL handlers related to certificate handling by LMS"""
-from dogapi import dog_stats_api
 import json
 import logging
 
@@ -7,7 +6,6 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from capa.xqueue_interface import XQUEUE_METRIC_NAME
 from lms.djangoapps.certificates.utils import certificate_status_for_student
 from lms.djangoapps.courseware.courses import get_course
 from lms.djangoapps.certificates.data import CertificateStatuses
@@ -135,10 +133,6 @@ def update_certificate(request):
                     'content': 'invalid cert status'}),
                     content_type='application/json')
 
-        dog_stats_api.increment(XQUEUE_METRIC_NAME, tags=[
-            u'action:update_certificate',
-            u'course_id:{}'.format(cert.course_id)
-        ])
 
         cert.save()
         return HttpResponse(json.dumps({'return_code': 0}),
