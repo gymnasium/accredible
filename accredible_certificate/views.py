@@ -8,20 +8,17 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from capa.xqueue_interface import XQUEUE_METRIC_NAME
-from lms.djangoapps.certificates.models import (
-    certificate_status_for_student,
-    CertificateStatuses,
-    GeneratedCertificate
-)
+from lms.djangoapps.certificates.utils import certificate_status_for_student
+from lms.djangoapps.courseware.courses import get_course
+from lms.djangoapps.certificates.data import CertificateStatuses
+from lms.djangoapps.certificates.models import GeneratedCertificate
+
 from accredible_certificate.queue import CertificateGeneration
-from opaque_keys.edx.locations import SlashSeparatedCourseKey
 from django.db import transaction
 from django.conf import settings
 from opaque_keys.edx.keys import CourseKey
 
-from courseware.courses import (
-    get_course,
-)
+
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 from django.urls import re_path
-from views import request_certificate
-from views import update_certificate
+from .views import request_certificate
+from .views import update_certificate
 
 
 urlpatterns = [
