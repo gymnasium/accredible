@@ -1,13 +1,11 @@
 from lms.djangoapps.certificates.models import GeneratedCertificate
-from lms.djangoapps.certificates.models import certificate_status_for_student
-from lms.djangoapps.certificates.models import CertificateStatuses as status
+from lms.djangoapps.certificates.utils import certificate_status_for_student
+from lms.djangoapps.certificates.data import CertificateStatuses as status
 from lms.djangoapps.certificates.models import CertificateWhitelist
 
 from courseware import courses
 from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from django.test.client import RequestFactory
-from capa.xqueue_interface import XQueueInterface
-from capa.xqueue_interface import make_xheader, make_hashkey
 from django.conf import settings
 from requests.auth import HTTPBasicAuth
 from student.models import UserProfile, CourseEnrollment
@@ -187,7 +185,7 @@ class CertificateGeneration(object):
                 # the embargoed country restricted list
                 # otherwise, put a new certificate request
                 # on the queue
-                print grade_contents
+                print(grade_contents)
                 if self.restricted.filter(user=student).exists():
                     new_status = status.restricted
                     cert.status = new_status
