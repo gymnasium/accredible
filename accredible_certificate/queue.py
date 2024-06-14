@@ -1,7 +1,7 @@
 from lms.djangoapps.certificates.models import GeneratedCertificate
 from lms.djangoapps.certificates.utils import certificate_status_for_student
 from lms.djangoapps.certificates.data import CertificateStatuses as status
-from lms.djangoapps.certificates.models import CertificateWhitelist
+from lms.djangoapps.certificates.models import CertificateAllowlist
 
 from courseware import courses
 from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
@@ -62,7 +62,7 @@ class CertificateGeneration(object):
         else:
             self.request = request
 
-        self.whitelist = CertificateWhitelist.objects.all()
+        self.allowlist = CertificateAllowlist.objects.all()
         self.restricted = UserProfile.objects.filter(allow_certificate=False)
         self.api_key = api_key
 
@@ -91,7 +91,7 @@ class CertificateGeneration(object):
         Certificate must be in the 'unavailable', 'error',
         'deleted' or 'generating' state.
 
-        If a student has a passing grade or is in the whitelist
+        If a student has a passing grade or is in the allowlist
         table for the course a request will be made for a new cert.
 
         If a student has allow_certificate set to False in the
@@ -148,10 +148,10 @@ class CertificateGeneration(object):
 
             if not description:
                 description = "course_description"
-            is_whitelisted = self.whitelist.filter(
+            is_allowlisted = self.allowlist.filter(
                 user=student,
                 course_id=course_id,
-                whitelist=True).exists()
+                allowlist=True).exists()
 
             grade = CourseGradeFactory().read(student, course)
             enrollment_mode, __ = CourseEnrollment.enrollment_mode_for_user(
@@ -179,7 +179,7 @@ class CertificateGeneration(object):
             # convert percent to points as an integer
             grade_contents = int(grade.percent * 100)
 
-            if is_whitelisted or grade_contents is not None:
+            if is_allowlisted or grade_contents is not None:
 
                 # check to see whether the student is on the
                 # the embargoed country restricted list
