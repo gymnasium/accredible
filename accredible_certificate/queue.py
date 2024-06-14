@@ -19,7 +19,7 @@ import lxml.html
 from lxml.etree import XMLSyntaxError, ParserError
 import requests
 from xmodule.modulestore.django import modulestore
-from util.db import outer_atomic
+from common.djangoapps.util.db import outer_atomic
 from django.db import transaction
 
 logger = logging.getLogger(__name__)
