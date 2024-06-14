@@ -3,7 +3,7 @@ from lms.djangoapps.certificates.utils import certificate_status_for_student
 from lms.djangoapps.certificates.data import CertificateStatuses as status
 from lms.djangoapps.certificates.models import CertificateAllowlist
 
-from courseware import courses
+from lms.djangoapps.courseware import courses
 from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from django.test.client import RequestFactory
 from django.conf import settings
