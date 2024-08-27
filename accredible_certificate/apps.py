@@ -5,8 +5,11 @@ add entries to the Django conf settings needed to run Accredible.
 """
 
 from django.apps import AppConfig
+from edx_django_utils.plugins.constants import (
+    PluginURLs, PluginSettings
+)
 from openedx.core.djangoapps.plugins.constants import (
-    ProjectType, SettingsType, PluginURLs, PluginSettings
+    ProjectType, SettingsType
 )
 
 
