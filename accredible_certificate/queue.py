@@ -178,7 +178,6 @@ class CertificateGeneration(object):
                 # the embargoed country restricted list
                 # otherwise, put a new certificate request
                 # on the queue
-                print grade_contents
                 if self.restricted.filter(user=student).exists():
                     new_status = status.restricted
                     cert.status = new_status
