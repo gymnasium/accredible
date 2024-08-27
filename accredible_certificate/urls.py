@@ -1,9 +1,7 @@
-from django.conf.urls import url
-from views import request_certificate
-from views import update_certificate
-
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    url(r'^request_certificate$', request_certificate, name='request_certificate'),
-    url(r'^update_certificate$', update_certificate, name='update_certificate')
+    path('request_certificate', views.request_certificate, name='request_certificate'),
+    path('update_certificate', views.update_certificate, name='update_certificate'),
 ]
