@@ -1,27 +1,18 @@
 from lms.djangoapps.certificates.models import GeneratedCertificate
-from lms.djangoapps.certificates.models import certificate_status_for_student
-from lms.djangoapps.certificates.models import CertificateStatuses as status
-from lms.djangoapps.certificates.models import CertificateWhitelist
+from lms.djangoapps.certificates.models import CertificateAllowlist
+from lms.djangoapps.certificates.api import certificate_status_for_student
+from lms.djangoapps.certificates.data import CertificateStatuses as status
 
-from courseware import courses
+from lms.djangoapps.courseware import courses
 from lms.djangoapps.grades.course_grade_factory import CourseGradeFactory
 from django.test.client import RequestFactory
-from capa.xqueue_interface import XQueueInterface
-from capa.xqueue_interface import make_xheader, make_hashkey
-from django.conf import settings
-from requests.auth import HTTPBasicAuth
-from student.models import UserProfile, CourseEnrollment
-from lms.djangoapps.verify_student.models import (
-    SoftwareSecurePhotoVerification
-)
+from common.djangoapps.student.models import UserProfile, CourseEnrollment
+
 import json
-import random
 import logging
-import lxml.html
-from lxml.etree import XMLSyntaxError, ParserError
 import requests
 from xmodule.modulestore.django import modulestore
-from util.db import outer_atomic
+from common.djangoapps.util.db import outer_atomic
 from django.db import transaction
 
 logger = logging.getLogger(__name__)
@@ -64,7 +55,7 @@ class CertificateGeneration(object):
         else:
             self.request = request
 
-        self.whitelist = CertificateWhitelist.objects.all()
+        self.whitelist = CertificateAllowlist.objects.all()
         self.restricted = UserProfile.objects.filter(allow_certificate=False)
         self.api_key = api_key
 
@@ -153,7 +144,7 @@ class CertificateGeneration(object):
             is_whitelisted = self.whitelist.filter(
                 user=student,
                 course_id=course_id,
-                whitelist=True).exists()
+                allowlist=True).exists()
 
             grade = CourseGradeFactory().read(student, course)
             enrollment_mode, __ = CourseEnrollment.enrollment_mode_for_user(
