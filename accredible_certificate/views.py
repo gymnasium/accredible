@@ -29,7 +29,7 @@ def request_certificate(request):
     then if and only if they pass, do they get a certificate issued.
     """
     if request.method == "POST":
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             # Enter your api key here
             xqci = CertificateGeneration(
                 api_key=settings.ACCREDIBLE_API_KEY
